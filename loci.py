@@ -6,6 +6,7 @@
 
 import os
 import sys
+import random
 import chess
 
 
@@ -92,8 +93,18 @@ kingEvalWhite = [
 kingEvalBlack = reverseList(kingEvalWhite)
 
 def printBoard(board):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
     print()
     print(board)
+
+def getLegalMoves(board):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
+    moves = []
+    for move in board.legal_moves:
+        moves.append(move)
+    
+    return moves
 
 def getAbsoluteValue(piece, piece_color, x, y):
     if (piece.piece_type == chess.PAWN):
@@ -131,6 +142,15 @@ def evaluateBoard(board):
     return totalEvaluation
 
 
+def minimax():
+    return
+
+
+def minimaxRoot(depth, board, isMaximisingPlayer):
+    newGameMoves = getLegalMoves(board)
+    return
+
+
 def makeBestMove():
     return
 
@@ -158,15 +178,17 @@ def main():
             if user_input is 'quit':
                 break
 
-            if move in board.legal_moves:
+            if move in getLegalMoves(board):
                 board.push(move)
             else:
                 print("Invalid Move.")
 
         elif board.turn is AI:
-            value = evaluateBoard(board)
-            print("\n" + str(value))
-            board.turn = PLAYER
+            moves = getLegalMoves(board)
+            move = moves[random.randint(0,len(moves)-1)]
+            board.push(move)
+
+            print("\nAI turn: ")
         
         printBoard(board)
 
