@@ -133,6 +133,8 @@ def getPieceValue(piece, x, y):
 
 
 def evaluateBoard(board):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
     totalEvaluation = 0
 
     for i in list(range(8)):
@@ -142,21 +144,78 @@ def evaluateBoard(board):
     return totalEvaluation
 
 
-def minimax():
-    return
+def minimax(depth, board, alpha, beta, isMaximisingPlayer):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
+    if depth == 0:
+        return -evaluateBoard(board)
+
+    newGameMoves = getLegalMoves(board)
+
+    if isMaximisingPlayer is True:
+        bestMove = -9999
+        for newGameMove in newGameMoves:
+            board.push(newGameMove)
+            bestMove = max(bestMove, minimax(depth - 1, board, alpha, beta, not isMaximisingPlayer))
+            board.pop()
+            alpha = max(alpha, bestMove)
+
+            if beta <= alpha:
+                return bestMove
+        
+        return bestMove
+    
+    elif isMaximisingPlayer is False:
+        bestMove = 9999
+        for newGameMove in newGameMoves:
+            board.push(newGameMove)
+            bestMove = min(bestMove, minimax(depth - 1, board, alpha, beta, not isMaximisingPlayer))
+            board.pop()
+            beta = min(beta, bestMove)
+
+            if beta <= alpha:
+                return bestMove
+        
+        return bestMove
 
 
 def minimaxRoot(depth, board, isMaximisingPlayer):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
     newGameMoves = getLegalMoves(board)
-    return
+    bestMove = -9999
+    bestMoveFound = 0
+
+    for newGameMove in newGameMoves:
+        board.push(newGameMove)
+        value = minimax(depth-1, board, -10000, 10000, not isMaximisingPlayer)
+        board.pop()
+
+        if value >= bestMove:
+            bestMove = value
+            bestMoveFound = newGameMove
+
+    return bestMoveFound
 
 
-def makeBestMove():
-    return
+def getBestMove(board):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
+    if board.is_game_over():
+        print("Game over")
+        sys.exit()
+
+    depth = 3
+    bestMove = minimaxRoot(depth, board, True)
+
+    return bestMove
 
 
-def getBestMove():
-    return
+def makeBestMove(board):
+    assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
+
+    bestMove = getBestMove(board)
+    board.push(bestMove)
 
 
 def getUserInput():
@@ -184,10 +243,7 @@ def main():
                 print("Invalid Move.")
 
         elif board.turn is AI:
-            moves = getLegalMoves(board)
-            move = moves[random.randint(0,len(moves)-1)]
-            board.push(move)
-
+            makeBestMove(board)
             print("\nAI turn: ")
         
         printBoard(board)
