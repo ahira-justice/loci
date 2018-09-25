@@ -92,7 +92,7 @@ kingEvalWhite = [
 
 kingEvalBlack = reverseList(kingEvalWhite)
 
-def printBoard(board):
+def displayBoard(board):
     assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
     print()
     print(board)
@@ -226,7 +226,7 @@ def main():
     board = chess.Board()
 
     print("\n-----START-----")
-    printBoard(board)
+    displayBoard(board)
 
     while not board.is_checkmate():
 
@@ -246,7 +246,7 @@ def main():
             makeBestMove(board)
             print("\nAI turn: ")
         
-        printBoard(board)
+        displayBoard(board)
 
 
 if __name__ == '__main__':
