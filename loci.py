@@ -217,6 +217,8 @@ def makeBestMove(board):
     bestMove = getBestMove(board)
     board.push(bestMove)
 
+    return bestMove.uci()
+
 
 def getUserInput():
     return input("\nPlayer turn: ")
@@ -243,10 +245,12 @@ def main():
                 print("Invalid Move.")
 
         elif board.turn is AI:
-            makeBestMove(board)
-            print("\nAI turn: ")
+            move = makeBestMove(board)
+            print("\nAI turn: " + move)
         
         displayBoard(board)
+
+    print("\n---Game-Over---")
 
 
 if __name__ == '__main__':
