@@ -4,9 +4,7 @@
 """
 
 
-import os
 import sys
-import random
 import chess
 
 
@@ -92,10 +90,12 @@ kingEvalWhite = [
 
 kingEvalBlack = reverseList(kingEvalWhite)
 
+
 def displayBoard(board):
     assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
     print()
     print(board)
+
 
 def getLegalMoves(board):
     assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
@@ -105,6 +105,7 @@ def getLegalMoves(board):
         moves.append(move)
     
     return moves
+
 
 def getAbsoluteValue(piece, piece_color, x, y):
     if (piece.piece_type == chess.PAWN):
@@ -201,10 +202,6 @@ def minimaxRoot(depth, board, isMaximisingPlayer):
 def getBestMove(board):
     assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
 
-    if board.is_game_over():
-        print("Game over")
-        sys.exit()
-
     depth = 3
     bestMove = minimaxRoot(depth, board, True)
 
@@ -230,7 +227,7 @@ def main():
     print("\n-----START-----")
     displayBoard(board)
 
-    while not board.is_checkmate():
+    while not board.is_game_over():
 
         if board.turn is PLAYER:
             user_input = getUserInput()

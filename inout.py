@@ -5,7 +5,6 @@
 
 
 import os
-import sys
 
 
 def readFile(filename):
@@ -28,17 +27,16 @@ def readFile(filename):
     return content
 
 
-def writeToFile(output, filename):
-    file = open(filename, 'w')
+def writeToFile(output, filename, mode):
+    file = open(filename, mode)
     file.write(output)
     file.close()
-    sys.exit()
 
 
-def writeToString(output, out_print):
+def writeToString(output, out_print=''):
     for item in output:
         item = str(item)
-        out_print += item + '\t'
+        out_print += item + '\n'
     out_print += '\n'
 
     return out_print
