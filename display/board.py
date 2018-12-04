@@ -8,6 +8,8 @@ import os
 import sys
 import pygame
 
+import pieces
+
 
 class Board:
     a8, a7, a6, a5, a4, a3, a2, a1 = (100, 100), (100, 150), (100, 200), (100, 250), (100, 300), (100, 350), (100, 400), (100, 450)
@@ -19,15 +21,11 @@ class Board:
     g8, g7, g6, g5, g4, g3, g2, g1 = (400, 100), (400, 150), (400, 200), (400, 250), (400, 300), (400, 350), (400, 400), (400, 450)
     h8, h7, h6, h5, h4, h3, h2, h1 = (450, 100), (450, 150), (450, 200), (450, 250), (450, 300), (450, 350), (450, 400), (450, 450)
     
-    posb = [
-        [a8, b8, c8, d8, e8, f8, g8, h8],
-        [a7, b7, c7, d7, e7, f7, g7, h7]
-        ]
+    posb = [a7, b7, c7, d7, e7, f7, g7, h7,
+            a8, b8, c8, d8, e8, f8, g8, h8]
     
-    posw = [
-        [a2, b2, c2, d2, e2, f2, g2, h2],
-        [a1, b1, c1, d1, e1, f1, g1, h1]
-        ]
+    posw = [a2, b2, c2, d2, e2, f2, g2, h2,
+            a1, b1, c1, d1, e1, f1, g1, h1]
     
     boardRect = (
         (a8, b8, c8, d8, e8, f8, g8, h8),
@@ -48,11 +46,18 @@ class Board:
         self.BGCOLOR = BGCOLOR
         self.DISPLAYSURF = DISPLAYSURF
 
+        self.pieceRect = []
+
 
     def displayBoard(self):
         self.DISPLAYSURF.fill(self.BGCOLOR)
         pygame.draw.rect(self.DISPLAYSURF, self.colors['Black'], (95, 95, 410, 410), 10)
 
+        self.drawTiles()
+        self.drawPieces()
+
+
+    def drawTiles(self):
         for i in range(1, len(Board.boardRect)+1):
             for j in range(1, len(Board.boardRect[i-1])+1):
                 if self.isOdd(i):
@@ -70,10 +75,64 @@ class Board:
     def isOdd(self, number):
         if number % 2 == 1:
             return True
-        return
 
 
     def isEven(self, number):
         if number % 2 == 0:
             return True
-        return
+
+
+    def drawPieces(self):
+        self.mapPieces()
+
+        for piece in self.pieceRect:
+            piece.displayPiece()
+
+    def mapPieces(self):
+        for i in range(len(Board.posb)):
+            if i in [0, 1, 2, 3, 4, 5, 6, 7]:
+                piece = self.createPiece(pieces.BLACK, pieces.PAWN, Board.posb[i])
+                self.pieceRect.append(piece)
+            elif i in [8, 15]:
+                piece = self.createPiece(pieces.BLACK, pieces.ROOK, Board.posb[i])
+                self.pieceRect.append(piece)
+            elif i in [9, 14]:
+                piece = self.createPiece(pieces.BLACK, pieces.KNGHT, Board.posb[i])
+                self.pieceRect.append(piece)
+            elif i in [10, 13]:
+                piece = self.createPiece(pieces.BLACK, pieces.BISHOP, Board.posb[i])
+                self.pieceRect.append(piece)
+            elif i in [11]:
+                piece = self.createPiece(pieces.BLACK, pieces.QUEEN, Board.posb[i])
+                self.pieceRect.append(piece)
+            elif i in [12]:
+                piece = self.createPiece(pieces.BLACK, pieces.KING, Board.posb[i])
+                self.pieceRect.append(piece)
+        
+        for i in range(len(Board.posw)):
+            if i in [0, 1, 2, 3, 4, 5, 6, 7]:
+                piece = self.createPiece(pieces.WHITE, pieces.PAWN, Board.posw[i])
+                self.pieceRect.append(piece)
+            elif i in [8, 15]:
+                piece = self.createPiece(pieces.WHITE, pieces.ROOK, Board.posw[i])
+                self.pieceRect.append(piece)
+            elif i in [9, 14]:
+                piece = self.createPiece(pieces.WHITE, pieces.KNGHT, Board.posw[i])
+                self.pieceRect.append(piece)
+            elif i in [10, 13]:
+                piece = self.createPiece(pieces.WHITE, pieces.BISHOP, Board.posw[i])
+                self.pieceRect.append(piece)
+            elif i in [11]:
+                piece = self.createPiece(pieces.WHITE, pieces.QUEEN, Board.posw[i])
+                self.pieceRect.append(piece)
+            elif i in [12]:
+                piece = self.createPiece(pieces.WHITE, pieces.KING, Board.posw[i])
+                self.pieceRect.append(piece)
+
+
+
+    def createPiece(self, color, type, position):
+        piece = pieces.Piece(color, type, self.DISPLAYSURF)
+        piece.setPosition(position)
+        return piece
+

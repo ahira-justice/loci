@@ -11,7 +11,6 @@ import pygame
 from pygame.locals import *
 
 import board
-import event
 
 
 os.environ['SDL_VIDEO_CENTERED'] = '1' # Centre display window.
@@ -31,6 +30,20 @@ WINDOWWIDTH, WINDOWHEIGHT = 600, 600
 BASICFONTSIZE = 30
 
 
+def terminate():
+    pygame.quit()
+    sys.exit()
+
+
+def checkForQuit():
+    for event in pygame.event.get(QUIT): # get all the QUIT events
+        terminate() #terminate if any QUIT events are present
+    for event in pygame.event.get(KEYUP): # get all the KEYUP events
+        if event.key == K_ESCAPE:
+            terminate() # terminate if the KEYUP event was for the Esc key
+        pygame.event.post(event) # put the other KEYUP event objects back
+
+
 def main():
     global DISPLAYSURF,BASICFONT
     pygame.init()
@@ -42,14 +55,14 @@ def main():
 
     DISPLAYSURF.fill(BGCOLOR)
     gameboard = board.Board(colors, BGCOLOR, DISPLAYSURF)
-
+    gameboard.displayBoard()
+    
     while True:
-        event.checkForQuit()
-        gameboard.displayBoard()
+        checkForQuit()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
-    event.terminate()
+    terminate()
 
 
 if __name__ == '__main__':
