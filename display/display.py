@@ -10,7 +10,7 @@ import time
 import pygame
 from pygame.locals import *
 
-import board
+import display.board as board
 
 
 os.environ['SDL_VIDEO_CENTERED'] = '1' # Centre display window.
@@ -44,8 +44,8 @@ def checkForQuit():
         pygame.event.post(event) # put the other KEYUP event objects back
 
 
-def main():
-    global DISPLAYSURF,BASICFONT
+def start():
+    global DISPLAYSURF,BASICFONT, gameboard
     pygame.init()
 
     # Setting up the GUI window.
@@ -53,17 +53,19 @@ def main():
     pygame.display.set_caption('LOCI')
     BASICFONT = pygame.font.SysFont('calibri', BASICFONTSIZE)
 
+    checkForQuit()
+
     DISPLAYSURF.fill(BGCOLOR)
     gameboard = board.Board(colors, BGCOLOR, DISPLAYSURF)
     gameboard.displayBoard()
+    gameboard.drawPieces()
     
-    while True:
-        checkForQuit()
-        pygame.display.update()
-        FPSCLOCK.tick(FPS)
+    pygame.display.update()
+    FPSCLOCK.tick(FPS)
 
-    terminate()
-
-
-if __name__ == '__main__':
-    main()
+def update(fen):
+    checkForQuit()
+    gameboard.displayBoard()
+    gameboard.updatePieces(fen)
+    pygame.display.update()
+    FPSCLOCK.tick(FPS)

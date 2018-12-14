@@ -8,6 +8,7 @@ import os
 import sys
 import pygame
 
+
 BLACK = 'BLACK'
 WHITE = 'WHITE'
 
@@ -20,19 +21,19 @@ ROOK = 'ROOK'
 
 
 class Piece:
-    bBishop = pygame.image.load('images/bB.png')
-    bKing = pygame.image.load('images/bK.png')
-    bKnight = pygame.image.load('images/bN.png')
-    bPawn = pygame.image.load('images/bP.png')
-    bQueen = pygame.image.load('images/bQ.png')
-    bRook = pygame.image.load('images/bR.png')
+    bBishop = pygame.image.load('display/images/bB.png')
+    bKing = pygame.image.load('display/images/bK.png')
+    bKnight = pygame.image.load('display/images/bN.png')
+    bPawn = pygame.image.load('display/images/bP.png')
+    bQueen = pygame.image.load('display/images/bQ.png')
+    bRook = pygame.image.load('display/images/bR.png')
 
-    wBishop = pygame.image.load('images/wB.png')
-    wKing = pygame.image.load('images/wK.png')
-    wKnight = pygame.image.load('images/wN.png')
-    wPawn = pygame.image.load('images/wP.png')
-    wQueen = pygame.image.load('images/wQ.png')
-    wRook = pygame.image.load('images/wR.png')
+    wBishop = pygame.image.load('display/images/wB.png')
+    wKing = pygame.image.load('display/images/wK.png')
+    wKnight = pygame.image.load('display/images/wN.png')
+    wPawn = pygame.image.load('display/images/wP.png')
+    wQueen = pygame.image.load('display/images/wQ.png')
+    wRook = pygame.image.load('display/images/wR.png')
 
     def __init__(self, color, piece, DISPLAYSURF):
         self.position = None
@@ -48,32 +49,41 @@ class Piece:
         self.position = position
     
 
-    def setSprite(self):
-        if self.color == BLACK:
-            if self.piece == BISHOP:
+    def setSprite(self):        
+        if self.piece == BISHOP:
+            if self.color == BLACK:
                 self.sprite = Piece.bBishop
-            elif self.piece == KING:
-                self.sprite = Piece.bKing
-            elif self.piece == KNGHT:
-                self.sprite = Piece.bKnight
-            elif self.piece == PAWN:
-                self.sprite = Piece.bPawn
-            elif self.piece == QUEEN:
-                self.sprite = Piece.bQueen
-            elif self.piece == ROOK:
-                self.sprite = Piece.bRook
-        elif self.color == WHITE:
-            if self.piece == BISHOP:
+            elif self.color == WHITE:
                 self.sprite = Piece.wBishop
-            elif self.piece == KING:
+        
+        elif self.piece == KING:
+            if self.color == BLACK:
+                self.sprite = Piece.bKing
+            elif self.color == WHITE:
                 self.sprite = Piece.wKing
-            elif self.piece == KNGHT:
+        
+        elif self.piece == KNGHT:
+            if self.color == BLACK:
+                self.sprite = Piece.bKnight
+            if self.color == WHITE:
                 self.sprite = Piece.wKnight
-            elif self.piece == PAWN:
+        
+        elif self.piece == PAWN:
+            if self.color == BLACK:
+                self.sprite = Piece.bPawn
+            elif self.color == WHITE:
                 self.sprite = Piece.wPawn
-            elif self.piece == QUEEN:
+        
+        elif self.piece == QUEEN:
+            if self.color == BLACK:
+                self.sprite = Piece.bQueen
+            elif self.color == WHITE:
                 self.sprite = Piece.wQueen
-            elif self.piece == ROOK:
+        
+        elif self.piece == ROOK:
+            if self.color == BLACK:
+                self.sprite = Piece.bRook
+            elif self.color == WHITE:
                 self.sprite = Piece.wRook
 
 

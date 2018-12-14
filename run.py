@@ -7,9 +7,11 @@
 import sys
 import chess
 import chess.pgn
+
 import inout
 import ai
 import eval
+import display.display as display
 
 AI1 = True
 AI2 = False
@@ -44,7 +46,7 @@ def run():
     #board.turn = False
 
     print("\n-----START-----")
-    #displayBoard(board)
+    display.start()
 
     while not board.is_game_over():
 
@@ -59,7 +61,7 @@ def run():
             #print("\nAI 2 turn: " + move)
 
         node = node.add_variation(bestMove)
-        #displayBoard(board)
+        display.update(board.fen())
 
     game.headers["Result"] = board.result()
     exporter = chess.pgn.StringExporter(columns=None, headers=False, comments=False, variations=True)

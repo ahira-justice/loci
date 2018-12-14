@@ -8,7 +8,8 @@ import os
 import sys
 import pygame
 
-import pieces
+import display.pieces as pieces
+import display.fenparser as fenparser
 
 
 class Board:
@@ -38,8 +39,8 @@ class Board:
         (a1, b1, c1, d1, e1, f1, g1, h1)
     )
 
-    btile = pygame.image.load('images/btile.png')
-    wtile = pygame.image.load('images/wtile.png')
+    btile = pygame.image.load('display/images/btile.png')
+    wtile = pygame.image.load('display/images/wtile.png')
 
     def __init__(self, colors, BGCOLOR, DISPLAYSURF):
         self.colors = colors
@@ -54,7 +55,6 @@ class Board:
         pygame.draw.rect(self.DISPLAYSURF, self.colors['Black'], (95, 95, 410, 410), 10)
 
         self.drawTiles()
-        self.drawPieces()
 
 
     def drawTiles(self):
@@ -87,6 +87,7 @@ class Board:
 
         for piece in self.pieceRect:
             piece.displayPiece()
+
 
     def mapPieces(self):
         for i in range(len(Board.posb)):
@@ -130,9 +131,67 @@ class Board:
                 self.pieceRect.append(piece)
 
 
-
     def createPiece(self, color, type, position):
         piece = pieces.Piece(color, type, self.DISPLAYSURF)
         piece.setPosition(position)
         return piece
+
+    
+    def updatePieces(self, fen):
+        self.pieceRect = []
+        fp = fenparser.FenParser(fen)
+        fenboard = fp.parse()
+
+        for i in range(len(fenboard)):
+            for j in range(len(fenboard[i])):
+                if fenboard[i][j] in ['b', 'B']:
+                    if fenboard[i][j] is 'b':
+                        piece = self.createPiece(pieces.BLACK, pieces.BISHOP, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'B':
+                        piece = self.createPiece(pieces.WHITE, pieces.BISHOP, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+
+                elif fenboard[i][j] in ['k', 'K']:
+                    if fenboard[i][j] is 'k':
+                        piece = self.createPiece(pieces.BLACK, pieces.KING, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'K':
+                        piece = self.createPiece(pieces.WHITE, pieces.KING, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+
+                elif fenboard[i][j] in ['n', 'N']:
+                    if fenboard[i][j] is 'n':
+                        piece = self.createPiece(pieces.BLACK, pieces.KNGHT, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'N':
+                        piece = self.createPiece(pieces.WHITE, pieces.KNGHT, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+
+                elif fenboard[i][j] in ['p', 'P']:
+                    if fenboard[i][j] is 'p':
+                        piece = self.createPiece(pieces.BLACK, pieces.PAWN, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'P':
+                        piece = self.createPiece(pieces.WHITE, pieces.PAWN, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                
+                elif fenboard[i][j] in ['q', 'Q']:
+                    if fenboard[i][j] is 'q':
+                        piece = self.createPiece(pieces.BLACK, pieces.QUEEN, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'Q':
+                        piece = self.createPiece(pieces.WHITE, pieces.QUEEN, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                
+                elif fenboard[i][j] in ['r', 'R']:
+                    if fenboard[i][j] is 'r':
+                        piece = self.createPiece(pieces.BLACK, pieces.ROOK, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                    elif fenboard[i][j] is 'R':
+                        piece = self.createPiece(pieces.WHITE, pieces.ROOK, Board.boardRect[i][j])
+                        self.pieceRect.append(piece)
+                        
+        for piece in self.pieceRect:
+            piece.displayPiece()
 
