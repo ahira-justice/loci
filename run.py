@@ -43,25 +43,25 @@ def run():
     ai1 = ai.AI(ai1file, 1)
     ai2 = ai.AI(ai2file, 2)
 
-    #board.turn = False
+    '''board.turn = False'''
 
     print("\n-----START-----")
     display.start()
 
     while not board.is_game_over():
+        display.checkForQuit()
 
         if board.turn is AI1:
             bestMove = ai1.getBestMove(board, depth)
             move = makeBestMove(bestMove, board)
-            #print("\nAI 1 turn: " + move)
         
         elif board.turn is AI2:
             bestMove = ai2.getBestMove(board, depth)
             move = makeBestMove(bestMove, board)
-            #print("\nAI 2 turn: " + move)
 
         node = node.add_variation(bestMove)
         display.update(board.fen())
+        display.checkForQuit()
 
     game.headers["Result"] = board.result()
     exporter = chess.pgn.StringExporter(columns=None, headers=False, comments=False, variations=True)
@@ -71,7 +71,7 @@ def run():
     return gamepgn
 
 def main(clargv):
-    if len(clargv) < 2:
+    if len(clargv) < 3:
         sys.exit()
 
     gamepgn = ''
