@@ -83,8 +83,8 @@ class AI:
         assert type(board) is chess.Board, 'Incorrect object type: %s' % (board.__class__)
 
         if self.state == 1:
-            bestMove = self.minimaxRoot(depth, board, False)
-        elif self.state == 2:
             bestMove = self.minimaxRoot(depth, board, True)
+        elif self.state == 2:
+            bestMove = self.minimaxRoot(depth, board, False)
 
         return bestMove

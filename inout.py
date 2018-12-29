@@ -31,12 +31,3 @@ def writeToFile(output, filename, mode):
     file = open(filename, mode)
     file.write(output)
     file.close()
-
-
-def writeToString(output, out_print=''):
-    for item in output:
-        item = str(item)
-        out_print += item + '\n'
-    out_print += '\n'
-
-    return out_print
